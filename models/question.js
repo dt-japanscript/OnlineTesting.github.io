@@ -1,10 +1,12 @@
 class Question {
-    constructor(type, id, content, answer) {
+    constructor(type, id, content, answers) {
         this.questionType = type;
         this.id = id;
         this.content = content;
-        this.answer = answer;
+        this.answers = answers;
     }
+
     checkExact() { }
+
     render() { }
 }

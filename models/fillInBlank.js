@@ -1,7 +1,8 @@
-class FillInBlank extends Question {
-  constructor(type, id, content, answer) {
-    super(type, id, content, answer);
+class FillInBank extends Question {
+  constructor(type, id, content, answers) {
+    super(type, id, content, answers);
   }
+
   render(index) {
     return `
           <div>
@@ -11,5 +12,15 @@ class FillInBlank extends Question {
            <input id="answer-${this.id}" type="text" class="form-control w-50" />
           </div>
           `;
+  }
+
+  checkExact() {
+    let value = document.getElementById(`answer-${this.id}`).value;
+    value = value.toLowerCase();
+
+    if (value === this.answers[0].content.toLowerCase()) {
+      return true;
+    }
+    return false;
   }
 }
