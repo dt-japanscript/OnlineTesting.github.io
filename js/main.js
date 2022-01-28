@@ -1,9 +1,5 @@
 let questionList = [];
 
-const domID = (id) => {
-    return document.getElementById(id);
-}
-
 const fetchQuestion = async () => {
     try {
         const res = await axios({
@@ -14,30 +10,43 @@ const fetchQuestion = async () => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 const renderQuestion = () => {
-    let htmlContent = '';
+    let htmlContent = "";
+
     for (let i in questionList) {
         htmlContent += questionList[i].render(+i + 1);
     }
 
-    domID("questionsContainer").innerHTML = htmlContent;
+    document.getElementById("questionsContainer").innerHTML = htmlContent;
 };
 
 const mapData = (data = []) => {
     questionList = data.map((item) => {
-        const { questionType, id, content, answer } = item; // destructuring in ES6
-        if (item.questionType === 1) {
-            return new MultipleChoice(questionType, id, content, answer);
+        const { questionType, id, content, answers } = item;
+
+        if (questionType === 1) {
+            return new MultipleChoice(questionType, id, content, answers);
         } else {
-            return new FillInBlank(questionType, id, content, answer);
+            return new FillInBank(questionType, id, content, answers);
         }
     });
-}
+};
 
-fetchQuestion().then((res) => {
-    // code khi question list da co
-    mapData(res);
+const submit = () => {
+    let result = 0;
+
+    for (let item of questionList) {
+        if (item.checkExact()) {
+            result++;
+        }
+    }
+    alert("Kết quả: " + result + "/" + questionList.length);
+};
+
+fetchQuestion().then((data) => {
+    //code khi question list đã có
+    mapData(data);
     renderQuestion();
 });
